@@ -72,7 +72,7 @@ public class LocationDao extends Dao implements ILocationDao {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return 0;
+        return 1;
     }
 
     public Location fromResultSet(ResultSet rs) throws SQLException{
