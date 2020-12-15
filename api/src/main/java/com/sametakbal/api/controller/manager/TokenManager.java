@@ -21,34 +21,38 @@ public class TokenManager {
                 .signWith(key).compact();
     }
 
-    public Jws<Claims> encode(String jwsString) {
+    public Jws<Claims> encode(String jwsString)  throws JwtException{
         Jws<Claims> jws = null;
-
-        try {
-            jws = Jwts.parserBuilder()  // (1)
-                    .setSigningKey(key)         // (2)
-                    .build()                    // (3)
-                    .parseClaimsJws(jwsString); // (4)
-
-            // we can safely trust the JWT
-        } catch (JwtException ex) {       // (5)
-            System.out.println(ex.getMessage());
-        }
+            jws = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwsString);
         return jws;
     }
 
     public boolean isExpired(String jwsString) {
         Jws<Claims> jws = null;
         try {
+            jws = encode(jwsString);
+        } catch (JwtException ex) {
+            System.out.println(ex.getMessage() +"--");
+        }
+
+        return jws != null && jws.getBody().getExpiration().after(jws.getBody().getIssuedAt());
+    }
+
+    public int getUserId(String token){
+        Jws<Claims> jws = null;
+        try {
             jws = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
-                    .parseClaimsJws(jwsString);
+                    .parseClaimsJws(token);
 
         } catch (JwtException ex) {
             System.out.println(ex.getMessage());
         }
-        return jws.getBody().getExpiration().after(jws.getBody().getIssuedAt());
+        return Integer.parseInt(jws.getBody().getId());
     }
 
 }

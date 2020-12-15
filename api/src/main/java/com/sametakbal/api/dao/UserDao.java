@@ -68,7 +68,7 @@ public class UserDao extends Dao implements IUserDao {
 
     @Override
     public int remove(int id) {
-        String q ="delete from users where id = ?";
+        String q = "delete from users where id = ?";
         try (PreparedStatement pst = this.getConn().prepareStatement(q)) {
             pst.setInt(1, id);
             pst.executeQuery();
@@ -83,5 +83,23 @@ public class UserDao extends Dao implements IUserDao {
         return new User(rs.getInt("id"), rs.getString("fullname"), rs.getString("username"),
                 rs.getString("email"), rs.getString("password"), rs.getBoolean("isAdmin"),
                 rs.getDate("created_on"), rs.getDate("last_login"));
+    }
+
+    @Override
+    public User login(String username, String password) {
+        String q = "select * from users where (email=? or username=?) and password=?";
+        try {
+            PreparedStatement pst = this.getConn().prepareStatement(q);
+            pst.setString(1, username);
+            pst.setString(2, username);
+            pst.setString(3, password);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()){
+                return fromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }
