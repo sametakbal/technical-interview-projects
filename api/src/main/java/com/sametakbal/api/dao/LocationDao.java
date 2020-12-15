@@ -2,8 +2,7 @@ package com.sametakbal.api.dao;
 
 import com.sametakbal.api.dao.interfaces.ILocationDao;
 import com.sametakbal.api.entity.Location;
-import com.sametakbal.api.entity.User;
-import org.xml.sax.helpers.LocatorImpl;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class LocationDao extends Dao implements ILocationDao {
     @Override
     public List<Location> get(String term) {
