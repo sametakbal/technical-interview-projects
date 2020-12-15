@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using weather_app.Models;
+using weather_app.Repositories;
+using weather_app.Repositories.Interfaces;
 
 namespace weather_app
 {
@@ -26,6 +28,7 @@ namespace weather_app
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession();
+            services.AddScoped<IUserRepository,UserRepository>();
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("weatherappdb")));
