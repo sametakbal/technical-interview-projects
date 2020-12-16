@@ -12,6 +12,8 @@ namespace weather_app.Repositories.Interfaces
         Task<bool> SaveUser(User user);
         Task<bool> RemoveUser(User user);
         Task<User> LoginUserWithEmailAndPassword(string email,string password);
+        Task<bool> CheckUserFromEmail(String email);
+        Task<bool> CheckUserFromUsername(String username);
         
     }
 }

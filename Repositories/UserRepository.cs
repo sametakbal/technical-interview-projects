@@ -21,6 +21,16 @@ namespace weather_app.Repositories
             return await _context.User.FindAsync(id);
         }
 
+        public async Task<bool> CheckUserFromEmail(string email)
+        {
+            return await _context.User.FirstOrDefaultAsync(u => u.Email.Equals(email)) == null;
+        }
+
+        public async Task<bool> CheckUserFromUsername(string username)
+        {
+            return await _context.User.FirstOrDefaultAsync(u =>u.UserName.Equals(username)) == null;
+        }
+
         public async Task<List<User>> GetUsers(string term)
         {
             // This method will be update
