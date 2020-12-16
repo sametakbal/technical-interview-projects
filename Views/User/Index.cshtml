@@ -1,0 +1,46 @@
+@model IEnumerable<weather_app.Models.User>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="checkbox mb-3">
+    <label>
+        <a class="btn btn-link" asp-action="UserPage">Create New User</a>
+    </label>
+</div>
+<div class="text-center">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.FullName</td>
+                    <td>
+                    <a asp-route-id="@item.Id" asp-action="UserPage">@item.UserName</a>
+                    </td>
+                    <td>@item.Email</td>
+                    @if(item.IsAdmin){
+                    <td>Admin</td>
+                    }else{
+                    <td>User</td>
+                     }
+                            
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+    </script>
+}
