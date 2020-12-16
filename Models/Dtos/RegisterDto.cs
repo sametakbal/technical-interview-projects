@@ -1,8 +1,7 @@
 namespace weather_app.Models.Dtos
 {
-    public class RegisterDto
+    public class RegisterDto : User
     {
-        public User User { get; set; }
         public string ErrorMessage { get; set; }
     }
 }
