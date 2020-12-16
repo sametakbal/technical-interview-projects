@@ -1,0 +1,103 @@
+@model IEnumerable<weather_app.Models.Location>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="checkbox mb-3">
+    <label>
+        <button class="btn btn-link" onclick="clearFormAndShow()">Create New Location</button>
+    </label>
+</div>
+<div class="text-center">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Location Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.LongCount()==0)
+            {
+                <h3>There is no location record yet.</h3>
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>
+                        <button class="btn btn-link" onclick="GetLocation(@item.Id)">
+                        @item.Name
+                        </button>
+                        </td>
+                </tr>
+            }
+        </tbody>
+        @if (Model.LongCount()==0)
+            {
+                <h3>There is no location record yet.</h3>
+            }
+    </table>
+</div>
+
+<div class="modal" tabindex="-1" id="locationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" asp-action="SaveLocation">
+                <div class="modal-body">
+                    <input type="hidden" name="Id" id="Id">
+                    <label for="inputLocation" class="sr-only">Location</label>
+                    <input type="text" id="inputLocation" name="Name" class="form-control" placeholder="Location"
+                        required autofocus>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="deleteButton" class="btn btn-danger" onclick="deleteLocation()"> Delete</button>
+                    <button type="submit" class="btn btn-primary">Save Location</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        
+        function GetLocation(locationId){
+            var id = document.getElementById("Id");
+            var locationName = document.getElementById("inputLocation");
+            fetch('/Location/GetLocation?id='+locationId)
+            .then(res=>res.json())
+            .then(res =>{
+                console.log(res);
+                locationName.value=res.name;
+                id.value=res.id;
+                $('#deleteButton').show();
+                $('#locationModal').modal('show');
+            });
+        }
+
+        function clearFormAndShow(){
+            document.getElementById("Id").value="";
+            document.getElementById("inputLocation").value="";
+            $('#deleteButton').hide();
+            $('#locationModal').modal('show');
+        }
+
+
+        function deleteLocation(){
+            var id = document.getElementById("Id").value;
+            if(confirm("Are you sure delete this location?")){
+                fetch('/Location/DeleteLocation?id='+id)
+                .then(res =>{
+                 location.reload();
+                });
+            }
+        }
+    </script>
+}

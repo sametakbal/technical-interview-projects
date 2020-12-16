@@ -29,6 +29,7 @@ namespace weather_app
         {
             services.AddSession();
             services.AddScoped<IUserRepository,UserRepository>();
+            services.AddScoped<ILocationRepository,LocationRepository>();
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("weatherappdb")));
