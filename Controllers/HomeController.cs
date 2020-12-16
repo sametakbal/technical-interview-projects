@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using weather_app.Filters;
 using weather_app.Models;
 
 namespace weather_app.Controllers
 {
+    [UserFilter]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
