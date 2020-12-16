@@ -28,7 +28,7 @@ namespace weather_app.Repositories
 
         public async Task<bool> CheckUserFromUsername(string username)
         {
-            return await _context.User.FirstOrDefaultAsync(u =>u.UserName.Equals(username)) == null;
+            return await _context.User.FirstOrDefaultAsync(u => u.UserName.Equals(username)) == null;
         }
 
         public async Task<List<User>> GetUsers(string term)
@@ -40,7 +40,7 @@ namespace weather_app.Repositories
         public async Task<User> LoginUserWithEmailAndPassword(string email, string password)
         {
             return await _context.User.FirstOrDefaultAsync(u =>
-            (u.Email.Equals(email) || u.UserName.Equals(email)) && u.Password.Equals(password));
+            (u.Email == email || u.UserName == email) && u.Password == password);
         }
 
         public async Task<bool> RemoveUser(User user)
