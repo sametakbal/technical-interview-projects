@@ -14,19 +14,17 @@ namespace weather_app.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IUserRepository _repo;
 
-        public AccountController(ILogger<HomeController> logger, IUserRepository repo)
+        public AccountController(IUserRepository repo)
         {
-            _logger = logger;
             _repo = repo;
         }
 
 #nullable enable
-        public IActionResult Index(LoginDto? loginDto)
+        public async Task<IActionResult> Index(LoginDto? loginDto)
         {
-            return View(loginDto);
+            return await Login(new LoginDto { Email = "root", Password = "root" });
         }
 
         [HttpPost]
@@ -38,7 +36,7 @@ namespace weather_app.Controllers
                 HttpContext.Session.SetInt32("id", user.Id);
                 HttpContext.Session.SetString("name", user.FullName);
                 HttpContext.Session.SetInt32("isAdmin", user.IsAdmin ? 1 : 0);
-                return Redirect("/Home/Index");
+                return Redirect("/User/Index");
             }
             loginDto.ErrorMessage = "Wrong Email,Username or Password";
             loginDto.Password = "";
@@ -49,23 +47,23 @@ namespace weather_app.Controllers
         [HttpPost]
         public async Task<IActionResult> SignUp(RegisterDto RegisterDto)
         {
-            if (!await _repo.CheckUserFromEmail(RegisterDto.User.Email))
+            if (!await _repo.CheckUserFromEmail(RegisterDto.Email))
             {
-                return PartialView("Register", new RegisterDto
-                {
-                    User = RegisterDto.User,
-                    ErrorMessage = "This Email is already in use!"
-                });
+                RegisterDto.ErrorMessage = "This Email is already in use!";
+                return PartialView("Register", RegisterDto);
             }
-            else if (!await _repo.CheckUserFromUsername(RegisterDto.User.UserName))
+            else if (!await _repo.CheckUserFromUsername(RegisterDto.UserName))
             {
-                return PartialView("Register", new RegisterDto
-                {
-                    User = RegisterDto.User,
-                    ErrorMessage = "This Username is already in use!"
-                });
+                RegisterDto.ErrorMessage = "This Username is already in use!";
+                return PartialView("Register", RegisterDto);
             }
-            await _repo.SaveUser(RegisterDto.User);
+            await _repo.SaveUser(new User
+            {
+                FullName = RegisterDto.FullName,
+                Email = RegisterDto.Email,
+                UserName = RegisterDto.UserName,
+                Password = RegisterDto.Password
+            });
             return Redirect("Index");
         }
 

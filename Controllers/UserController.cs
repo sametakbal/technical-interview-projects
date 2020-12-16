@@ -15,12 +15,10 @@ namespace weather_app.Controllers
     [UserFilter]
     public class UserController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IUserRepository _repo;
 
-        public UserController(ILogger<HomeController> logger, IUserRepository repo)
+        public UserController(IUserRepository repo)
         {
-            _logger = logger;
             _repo = repo;
         }
 #nullable enable

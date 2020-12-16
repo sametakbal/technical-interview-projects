@@ -14,12 +14,10 @@ namespace weather_app.Controllers
     [UserFilter]
     public class LocationController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ILocationRepository _repo;
 
-        public LocationController(ILogger<HomeController> logger, ILocationRepository repo)
+        public LocationController(ILocationRepository repo)
         {
-            _logger = logger;
             _repo = repo;
         }
         public async Task<IActionResult> Index()
