@@ -1,0 +1,58 @@
+@model weather_app.Models.Dtos.RegisterDto
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    @if (Model.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+    }
+    <form class="form-signin" id="signup" method="POST" asp-controller="User" asp-action="SaveUser" autocomplete="off">
+        <input type="hidden" asp-for="Id">
+        <label for="inputName" class="sr-only">Full Name</label>
+        <input type="text" asp-for="FullName" class="form-control" placeholder="Full Name" required autofocus><br />
+
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" asp-for="UserName" class="form-control" placeholder="Username" required autofocus><br />
+
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" asp-for="Email" class="form-control" placeholder="Email address" required autofocus><br />
+
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="text" id="inputPassword" asp-for="Password" class="form-control" placeholder="Password" required
+            autofocus><br />
+        <div class="form-check">
+            <input class="form-check-input" type="radio" asp-for="IsAdmin" value="true" checked>
+            <label class="form-check-label">
+                Admin
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" asp-for="IsAdmin" id="exampleRadios2" value="false">
+            <label class="form-check-label">
+                User
+            </label>
+        </div><br />
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Save User</button>
+    </form>
+    @if (Model.Id != 0)
+    {
+        <br/>
+        <button class="btn btn-lg btn-danger btn-block" onclick="deleteUser(@Model.Id)" type="button">Delete User</button>
+    }
+</div>
+
+@section Scripts{
+    <script>
+        function deleteUser(Id){
+             if(confirm("Are you sure delete this user?")){
+                fetch('/User/DeleteUser?id='+Id)
+                .then(res =>{
+                 window.location.href = "/User/Index";
+                });
+            }
+        }
+    </script>
+}
