@@ -10,7 +10,7 @@ using weather_app.Models;
 namespace weather_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201215184022_first")]
+    [Migration("20201216095246_first")]
     partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,23 @@ namespace weather_app.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("weather_app.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+                });
 
             modelBuilder.Entity("weather_app.Models.User", b =>
                 {
@@ -44,7 +61,7 @@ namespace weather_app.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastLogin")
+                    b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")

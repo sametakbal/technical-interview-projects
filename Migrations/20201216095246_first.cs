@@ -8,6 +8,19 @@ namespace weather_app.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Location",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Location", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -19,7 +32,7 @@ namespace weather_app.Migrations
                     Password = table.Column<string>(type: "nvarchar(55)", maxLength: 55, nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,6 +42,9 @@ namespace weather_app.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Location");
+
             migrationBuilder.DropTable(
                 name: "User");
         }

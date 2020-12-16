@@ -19,6 +19,23 @@ namespace weather_app.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
+            modelBuilder.Entity("weather_app.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+                });
+
             modelBuilder.Entity("weather_app.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -42,7 +59,7 @@ namespace weather_app.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastLogin")
+                    b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")

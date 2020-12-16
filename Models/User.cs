@@ -22,6 +22,6 @@ namespace weather_app.Models
         public string Password { get; set; }
         public bool IsAdmin { get; set; }=false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime LastLogin { get; set; }
+        public DateTime? LastLogin { get; set; }
     }
 }
