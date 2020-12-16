@@ -35,8 +35,9 @@ namespace weather_app.Controllers
             var user = await _repo.LoginUserWithEmailAndPassword(loginDto.Email, loginDto.Password);
             if (user != null)
             {
-                HttpContext.Session.SetInt32("id",user.Id);
-                HttpContext.Session.SetString("name",user.FullName);
+                HttpContext.Session.SetInt32("id", user.Id);
+                HttpContext.Session.SetString("name", user.FullName);
+                HttpContext.Session.SetInt32("isAdmin", user.IsAdmin ? 1 : 0);
                 return Redirect("/Home/Index");
             }
             loginDto.ErrorMessage = "Wrong Email,Username or Password";
@@ -81,7 +82,8 @@ namespace weather_app.Controllers
         }
 
 
-        public IActionResult LogOut(){
+        public IActionResult LogOut()
+        {
             HttpContext.Session.Clear();
             return Redirect("Index");
         }
