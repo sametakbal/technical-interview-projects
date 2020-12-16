@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using weather_app.Models;
 using weather_app.Repositories.Interfaces;
+using weather_app.Models.Dtos;
 
 namespace weather_app.Controllers
 {
@@ -27,15 +28,32 @@ namespace weather_app.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUp(User user)
+        public async Task<IActionResult> SignUp(RegisterDto RegisterDto)
         {
-            await _repo.SaveUser(user);
+            if (!await _repo.CheckUserFromEmail(RegisterDto.User.Email))
+            {
+                return PartialView("Register",new RegisterDto
+                {
+                    User = RegisterDto.User,
+                    ErrorMessage = "This Email is already in use!"
+                });
+            }
+            else if (!await _repo.CheckUserFromUsername(RegisterDto.User.UserName))
+            {
+                return PartialView("Register",new RegisterDto
+                {
+                    User = RegisterDto.User,
+                    ErrorMessage = "This Username is already in use!"
+                });
+            }
+            await _repo.SaveUser(RegisterDto.User);
             return Redirect("Index");
         }
 
-        public IActionResult Register()
+#nullable enable
+        public IActionResult Register(RegisterDto? registerDto)
         {
-            return View();
+            return View(registerDto);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
