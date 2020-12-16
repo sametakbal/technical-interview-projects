@@ -1,24 +1,34 @@
+@model weather_app.Models.Dtos.RegisterDto
 @{
     Layout = "_AccountLayout";
 }
-<form class="form-signin" id="signup" method="POST" asp-controller="Account" asp-action="SignUp" onsubmit="return validateForm()" autocomplete="off">
+
+<form class="form-signin" id="signup" method="POST" asp-controller="Account" asp-action="SignUp"
+    onsubmit="return validateForm()" autocomplete="off">
     <img class="mb-4" src="https://i.pinimg.com/originals/77/0b/80/770b805d5c99c7931366c2e84e88f251.png" alt=""
         width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
+    @if (Model.ErrorMessage != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @Model.ErrorMessage
+        </div>
+        <h1>@Model.User.Email</h1>
+    }
 
     <label for="inputName" class="sr-only">Full Name</label>
-    <input type="text" id="inputName" name="FullName" class="form-control" placeholder="Full Name" required autofocus>
+    <input type="text" asp-for="User.FullName" class="form-control" placeholder="Full Name" required autofocus>
 
     <label for="inputUsername" class="sr-only">Username</label>
-    <input type="text" id="inputUsername" name="UserName" class="form-control" placeholder="Username" required
+    <input type="text" asp-for="User.UserName" class="form-control" placeholder="Username" required
         autofocus>
 
     <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" name="Email" class="form-control" placeholder="Email address" required
+    <input type="email" asp-for="User.Email" class="form-control" placeholder="Email address" required
         autofocus>
 
     <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" name="Password" class="form-control" placeholder="Password" required
+    <input type="password" id="inputPassword" asp-for="User.Password" class="form-control" placeholder="Password" required
         autofocus>
 
     <label for="inputPasswordConfirm" class="sr-only">Password Confirm</label>
@@ -35,9 +45,9 @@
 
 <script>
     function validateForm() {
-        var pass = document.getElementById("inputPassword");
+       var pass = document.getElementById("inputPassword");
         var pass_confirm = document.getElementById("inputPasswordConfirm");
-        if(pass.value === pass_confirm.value){
+        if (pass.value === pass_confirm.value) {
             return true;
         }
         alert("Passwords does not match");
