@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using weather_app.Models;
@@ -18,7 +19,8 @@ namespace weather_app.Repositories
 
         public async Task<User> GetUserById(int id)
         {
-            return await _context.User.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
+            return user.UserName == "root" ? null : user;
         }
 
         public async Task<bool> CheckUserFromEmail(string email)
@@ -33,8 +35,11 @@ namespace weather_app.Repositories
 
         public async Task<List<User>> GetUsers(string term)
         {
-            // This method will be update
-            return await _context.User.ToListAsync();
+            if (term != null)
+            {
+                return await _context.User.Where(u => (u.FullName.Contains(term) || u.Email.Contains(term) || u.UserName.Contains(term)) && u.UserName != "root").ToListAsync();
+            }
+            return await _context.User.Where(u => u.UserName != "root").ToListAsync();
         }
 
         public async Task<User> LoginUserWithEmailAndPassword(string email, string password)
@@ -43,9 +48,9 @@ namespace weather_app.Repositories
             (u.Email == email || u.UserName == email) && u.Password == password);
         }
 
-        public async Task<bool> RemoveUser(User user)
+        public async Task<bool> RemoveUser(int id)
         {
-            _context.User.Remove(user);
+            _context.User.Remove(await GetUserById(id));
             int res = await _context.SaveChangesAsync();
             return res != 0;
         }
