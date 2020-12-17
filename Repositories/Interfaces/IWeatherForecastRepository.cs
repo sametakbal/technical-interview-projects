@@ -6,6 +6,7 @@ namespace weather_app.Repositories.Interfaces
 {
     public interface IWeatherForecastRepository
     {
-         Task<WeatherForecast> GetWeatherForecast(WFRequestDto wFRequest);
+        Task<WeatherForecast> GetWeatherForecast(WFRequestDto wFRequest);
+        WeatherForecast GetWeatherForecastFromJsonString(string content);
     }
 }
