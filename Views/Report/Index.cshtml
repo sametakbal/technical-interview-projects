@@ -1,0 +1,82 @@
+@model weather_app.Models.Dtos.ReportPageDto
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-3 mt-3">
+            <ul class="nav flex-column">
+                <form id="reportForm" method="POST" asp-controller="Report" asp-action="GetUserReports">
+                        <li class="nav-item">
+                            <label>User:</label>
+                            <select class="form-control" asp-for="UserId" required>
+                                <option value="">Select a User</option>
+                                @foreach (var item in Model.Users)
+                                {
+                                    <option value="@item.Id">@item.FullName</option>
+                                }
+                                </select>
+                            </li>
+                            <li class="nav-item">
+                                <label>Start Date:</label>
+                                <input type="date" asp-for="StartDate" class="form-control">
+                            </li>
+                            <li class="nav-item">
+                                <label>End Date:</label>
+                                <input type="date" asp-for="EndDate" class="form-control">
+                            </li>
+                            <li class="nav-item">
+                                <label>Query State:</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="QueryState" value="true" checked>
+                                    <label class="form-check-label">
+                                        Success
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" asp-for="QueryState" id="exampleRadios2"
+                                        value="false">
+                                    <label class="form-check-label">
+                                        Fail
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn btn-primary" type="submit">Get Reports</button>
+                            </li>
+                </form>
+                </ul>
+            </div>
+            <div class="col-9 mt-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Query Time</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Ip Address</th>
+                            <th scope="col">Query Fetch Time</th>
+                            <th scope="col">Is Success</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Reports)
+                        {
+                        <tr>
+                            <th scope="row">@item.Id</th>
+                            <td>@item.QueryTime</td>
+                            <td>@item.Location.Name</td>
+                            <td>@item.IpAddress</td>
+                            <td>@item.QueryFetchTime ms</td>
+                            <td>@item.isSuccess</td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+            @if (Model.Reports.Count == 0)
+            {
+             <h3 class="text-center">No reports found yet</h3>
+             }
+        </div>
+    </div>
+</div>
