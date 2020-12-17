@@ -1,0 +1,13 @@
+@model weather_app.Models.WeatherForecast
+<a href="/Report/Index">Back</a>
+<div class="container container-sm text-center col-md-9" id="sel">
+ <img src="@Url.Content("http://openweathermap.org/img/wn/"+Model.weather.First().icon+".png")" width="100" height="100" />
+    <h1>@Model.name</h1>
+    <hr>
+    <h1>@Model.weather.First().main</h1>
+    <h2>@Model.weather.First().description</h2>
+    <h2>@Model.main.temp &#8451;</h2>
+    <h2>Feels like: @Model.main.feels_like &#8451;</h2>
+    <h2>Clouds percent: @Model.clouds.all &#37;</h2>
+    <h2>Wind Speed: @Model.wind.speed km/h</h2>
+</div>
