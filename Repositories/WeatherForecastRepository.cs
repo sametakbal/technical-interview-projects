@@ -21,20 +21,6 @@ namespace weather_app.Repositories
             _locationRepo = locationRepo;
             _reportRepo = reportRepo;
         }
-        public async Task getWeat()
-        {
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            var client = new HttpClient();
-            var content = await client.GetStringAsync(url);
-            timer.Stop();
-
-            TimeSpan timeTaken = timer.Elapsed;
-            Console.WriteLine(timeTaken.TotalMilliseconds);
-            Console.WriteLine(content);
-            var weatherForecast = JsonConvert.DeserializeObject<WeatherForecast>(content);
-        }
-
         public async Task<WeatherForecast> GetWeatherForecast(WFRequestDto wFRequest)
         {
             string locationName = await _locationRepo.GetLocationNameById(wFRequest.Location);
@@ -64,6 +50,11 @@ namespace weather_app.Repositories
             weatherForecast.locations = await _locationRepo.GetLocationAll(null);
 
             return weatherForecast;
+        }
+
+        public WeatherForecast GetWeatherForecastFromJsonString(string content)
+        {
+            return JsonConvert.DeserializeObject<WeatherForecast>(content);
         }
     }
 }
