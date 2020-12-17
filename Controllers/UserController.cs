@@ -25,7 +25,7 @@ namespace weather_app.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string? term)
         {
-            return View(await _repo.GetUsers(term));
+            return View(await _repo.GetUsers(false));
         }
 
         [HttpGet]

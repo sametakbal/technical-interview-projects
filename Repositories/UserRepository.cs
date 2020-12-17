@@ -19,8 +19,7 @@ namespace weather_app.Repositories
 
         public async Task<User> GetUserById(int id)
         {
-            var user = await _context.User.FindAsync(id);
-            return user.UserName == "root" ? null : user;
+            return await _context.User.FirstOrDefaultAsync(u => u.UserName != "root" && u.Id == id);
         }
 
         public async Task<bool> CheckUserFromEmail(string email)
@@ -33,13 +32,9 @@ namespace weather_app.Repositories
             return await _context.User.FirstOrDefaultAsync(u => u.UserName.Equals(username)) == null;
         }
 
-        public async Task<List<User>> GetUsers(string term)
+        public async Task<List<User>> GetUsers(bool includeRoot)
         {
-            if (term != null)
-            {
-                return await _context.User.Where(u => (u.FullName.Contains(term) || u.Email.Contains(term) || u.UserName.Contains(term)) && u.UserName != "root").ToListAsync();
-            }
-            return await _context.User.Where(u => u.UserName != "root").ToListAsync();
+            return includeRoot ? await _context.User.ToListAsync() : await _context.User.Where(u => u.UserName != "root").ToListAsync();
         }
 
         public async Task<User> LoginUserWithEmailAndPassword(string email, string password)

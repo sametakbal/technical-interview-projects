@@ -27,7 +27,7 @@ namespace weather_app.Controllers
             {
                 reportPageDto = new ReportPageDto();
             }
-            reportPageDto.Users = await _userRepo.GetUsers(null);
+            reportPageDto.Users = await _userRepo.GetUsers(true);
             return View(reportPageDto);
         }
 
