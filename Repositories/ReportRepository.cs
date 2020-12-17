@@ -17,6 +17,11 @@ namespace weather_app.Repositories
             _context = context;
         }
 
+        public async Task<Report> GetReportById(int id)
+        {
+            return await _context.Report.FindAsync(id);
+        }
+
         public async Task<ReportPageDto> GetReports(ReportPageDto reportPageDto)
         {
             reportPageDto.Reports = await _context.Report.Where(r => r.UserId == reportPageDto.UserId &&
@@ -25,7 +30,7 @@ namespace weather_app.Repositories
             reportPageDto.QueryState
             ).OrderByDescending(report => report.QueryTime).Include(rep => rep.Location).ToListAsync();
             reportPageDto.Users = await _context.User.ToListAsync();
-            
+
             return reportPageDto;
         }
 
