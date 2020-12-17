@@ -24,6 +24,12 @@ namespace weather_app.Repositories
             return await _context.Location.FindAsync(id);
         }
 
+        public async Task<string> GetLocationNameById(int id)
+        {
+            var location = await GetLocationById(id);
+            return location.Name;
+        }
+
         public async Task<bool> RemoveLocation(int id)
         {
             var location = await _context.Location.FindAsync(id);
