@@ -1,0 +1,50 @@
+﻿@model weather_app.Models.WeatherForecast
+@{
+    Layout = "_Layout";
+}
+
+<div class="container container-sm text-center" id="sel">
+    <form method="POST" asp-controller="WeatherForecast" asp-action="GetWeatherForecast">
+    <select class="form-control" id="Location" name="Location" required>
+        <option value="">Select a Location</option>
+        @foreach (var loc in Model.locations)
+        {
+            <option value="@loc.Id">@loc.Name</option>
+        }
+</select>
+    <input type="hidden" name="IpAddress" id="IpAddress"><br>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Get Weather Forecast</button>
+    </form>
+
+@if (Model.weather!=null)
+{
+    <h1>@Model.weather.First().main</h1>
+    <h2>@Model.weather.First().description</h2>
+    <h2>@Model.main.temp &#8451;</h2>
+    <h2>Feels like: @Model.main.feels_like</h2>
+    <h2>Clouds percent: @Model.clouds.all</h2>
+    
+}
+
+</div>
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            setData();
+    });
+        function setData(){
+            var ipAddress=document.getElementById("IpAddress");
+            document.getElementById("Location").value="1";
+            fetch('https://api.ipify.org/?format=json')
+            .then(res=>res.json())
+            .then(res=>{
+                ipAddress.value=res.ip;
+                console.log(res.ip);
+            });
+            return true;
+        }
+    </script>
+}
