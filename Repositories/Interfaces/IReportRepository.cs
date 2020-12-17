@@ -8,5 +8,7 @@ namespace weather_app.Repositories.Interfaces
     {
         Task<bool> SaveReport(Report report);
         Task<ReportPageDto> GetReports(ReportPageDto reportPageDto);
+
+        Task<Report> GetReportById(int id);
     }
 }
