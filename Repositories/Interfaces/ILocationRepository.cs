@@ -8,6 +8,7 @@ namespace weather_app.Repositories.Interfaces
     {
         Task<List<Location>> GetLocationAll(string term);
         Task<Location> GetLocationById(int id);
+        Task<string> GetLocationNameById(int id);
         Task<bool> SaveLocation(Location location);
         Task<bool> RemoveLocation(int id);
     }
