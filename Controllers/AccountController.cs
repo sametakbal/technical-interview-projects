@@ -22,9 +22,9 @@ namespace weather_app.Controllers
         }
 
 #nullable enable
-        public async Task<IActionResult> Index(LoginDto? loginDto)
+        public IActionResult Index(LoginDto? loginDto)
         {
-            return await Login(new LoginDto { Email = "root", Password = "root" });
+            return View(loginDto);
         }
 
         [HttpPost]
@@ -36,7 +36,7 @@ namespace weather_app.Controllers
                 HttpContext.Session.SetInt32("id", user.Id);
                 HttpContext.Session.SetString("name", user.FullName);
                 HttpContext.Session.SetInt32("isAdmin", user.IsAdmin ? 1 : 0);
-                return Redirect("/User/Index");
+                return Redirect("/WeatherForecast/Index");
             }
             loginDto.ErrorMessage = "Wrong Email,Username or Password";
             loginDto.Password = "";
