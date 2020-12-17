@@ -12,10 +12,12 @@ namespace weather_app.Controllers
         private readonly IReportRepository _repo;
         private readonly IUserRepository _userRepo;
 
-        public ReportController(IReportRepository repo, IUserRepository userRepo = null)
+        private readonly IWeatherForecastRepository _weatherRepo;
+        public ReportController(IReportRepository repo, IUserRepository userRepo, IWeatherForecastRepository weatherRepo)
         {
             _repo = repo;
             _userRepo = userRepo;
+            _weatherRepo = weatherRepo;
         }
 
 #nullable enable
@@ -32,6 +34,17 @@ namespace weather_app.Controllers
         public async Task<IActionResult> GetUserReports(ReportPageDto reportPageDto)
         {
             return PartialView("Index", await _repo.GetReports(reportPageDto));
+        }
+
+        public async Task<IActionResult> QueryResultPage(int id)
+        {
+            var report = await _repo.GetReportById(id);
+            if (report == null)
+            {
+                return Redirect("/Report/Index");
+            }
+
+            return View(_weatherRepo.GetWeatherForecastFromJsonString(report.QueryResult));
         }
     }
 }
