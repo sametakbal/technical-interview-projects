@@ -37,7 +37,6 @@
     });
         function setData(){
             var ipAddress=document.getElementById("IpAddress");
-            document.getElementById("Location").value="1";
             fetch('https://api.ipify.org/?format=json')
             .then(res=>res.json())
             .then(res=>{
