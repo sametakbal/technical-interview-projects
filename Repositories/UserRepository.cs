@@ -39,8 +39,14 @@ namespace weather_app.Repositories
 
         public async Task<User> LoginUserWithEmailAndPassword(string email, string password)
         {
-            return await _context.User.FirstOrDefaultAsync(u =>
+            var user = await _context.User.FirstOrDefaultAsync(u =>
             (u.Email == email || u.UserName == email) && u.Password == password);
+            if (user != null)
+            {
+                user.LastLogin = DateTime.Now;
+                await SaveUser(user);
+            }
+            return user;
         }
 
         public async Task<bool> RemoveUser(int id)
