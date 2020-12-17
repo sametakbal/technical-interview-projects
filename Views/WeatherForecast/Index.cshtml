@@ -3,7 +3,7 @@
     Layout = "_Layout";
 }
 
-<div class="container container-sm text-center" id="sel">
+<div class="container container-sm text-center col-md-5" id="sel">
     <form method="POST" asp-controller="WeatherForecast" asp-action="GetWeatherForecast">
     <select class="form-control" id="Location" name="Location" required>
         <option value="">Select a Location</option>
@@ -18,11 +18,15 @@
 
 @if (Model.weather!=null)
 {
+    <img src="@Url.Content("http://openweathermap.org/img/wn/"+Model.weather.First().icon+".png")" width="100" height="100" />
+    <h1>@Model.name</h1>
+    <hr>
     <h1>@Model.weather.First().main</h1>
     <h2>@Model.weather.First().description</h2>
     <h2>@Model.main.temp &#8451;</h2>
-    <h2>Feels like: @Model.main.feels_like</h2>
-    <h2>Clouds percent: @Model.clouds.all</h2>
+    <h2>Feels like: @Model.main.feels_like &#8451;</h2>
+    <h2>Clouds percent: @Model.clouds.all &#37;</h2>
+    <h2>Wind Speed: @Model.wind.speed km/h</h2>
     
 }
 
