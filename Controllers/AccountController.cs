@@ -9,6 +9,7 @@ using weather_app.Models;
 using weather_app.Repositories.Interfaces;
 using weather_app.Models.Dtos;
 using Microsoft.AspNetCore.Http;
+using weather_app.Filters;
 
 namespace weather_app.Controllers
 {
@@ -24,6 +25,10 @@ namespace weather_app.Controllers
 #nullable enable
         public IActionResult Index(LoginDto? loginDto)
         {
+            if (HttpContext.Session.GetInt32("id").HasValue)
+            {
+                return Redirect("/WeatherForecast/Index");
+            }
             return View(loginDto);
         }
 
@@ -70,6 +75,10 @@ namespace weather_app.Controllers
 #nullable enable
         public IActionResult Register(RegisterDto? registerDto)
         {
+            if (HttpContext.Session.GetInt32("id").HasValue)
+            {
+                return Redirect("/WeatherForecast/Index");
+            }
             return View(registerDto);
         }
 
@@ -83,7 +92,7 @@ namespace weather_app.Controllers
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
-            return Redirect("Index");
+            return Redirect("/Account/Index");
         }
     }
 }
