@@ -4,7 +4,7 @@
 }
 
 <div class="container container-sm text-center col-md-5" id="sel">
-    <form method="POST" asp-controller="WeatherForecast" asp-action="GetWeatherForecast">
+    <form method="POST" asp-controller="WeatherForecast" asp-action="GetWeatherForecast"  autocomplete="off">
     <select class="form-control" id="Location" name="Location" required>
         <option value="">Select a Location</option>
         @foreach (var loc in Model.locations)

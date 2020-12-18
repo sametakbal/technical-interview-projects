@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-3 mt-3">
             <ul class="nav flex-column">
-                <form id="reportForm" method="POST" asp-controller="Report" asp-action="GetUserReports">
+                <form id="reportForm" method="POST" asp-controller="Report" autocomplete="off" asp-action="GetUserReports">
                     <li class="nav-item">
                         <label>User:</label>
                         <select class="form-control" asp-for="UserId" required>
