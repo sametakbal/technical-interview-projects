@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using weather_app.Filters;
 using weather_app.Models.Dtos;
@@ -27,7 +28,8 @@ namespace weather_app.Controllers
             {
                 reportPageDto = new ReportPageDto();
             }
-            reportPageDto.Users = await _userRepo.GetUsers(true);
+            string userFullname = HttpContext.Session.GetString("name");
+            reportPageDto.Users = await _userRepo.GetUsers(userFullname == "ROOT");
             return View(reportPageDto);
         }
 
